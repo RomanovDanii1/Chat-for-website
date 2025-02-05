@@ -45,9 +45,3 @@ Dieses Projekt stellt einen mehrstufigen Chat bereit, den du problemlos auf jede
 
 ---
 
-## Installation & Start (Frontend)
-
-1. **Abhängigkeiten installieren**:
-   ```bash
-   npm install
-
