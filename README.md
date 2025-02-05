@@ -32,8 +32,7 @@ Dieses Projekt stellt einen mehrstufigen Chat bereit, den du problemlos auf jede
 
 2. **Backend**:  
    - Ein FastAPI-Server (Python) stellt WebSocket-/HTTP-Endpunkte bereit und kümmert sich um die KI-Integration.  
-   - Falls in der `.env` **keine** `OPENAI_KEY` und `ASSISTANT_ID` angegeben sind, antwortet der Bot nur mit einem zeitversetzten Echo.  
-   - Das Backend befindet sich in einem separaten Repository, das du unter folgender **[Link](...)** kopieren kannst. Dort ist bereits ein vorkonfigurierter **Docker-Container** enthalten. Du musst lediglich die `.env`-Variablen setzen und den Container starten.
+   - Das Backend befindet sich in einem separaten Repository, das du unter folgender **[Link](https://github.com/RomanovDanii1/Chat-for-website-backend/tree/main)** kopieren kannst. Dort ist bereits ein vorkonfigurierter **Docker-Container** enthalten. Du musst lediglich die `.env`-Variablen setzen und den Container starten.
 
 ### Wichtige `.env`-Variablen (Backend)
 
