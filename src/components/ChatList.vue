@@ -17,6 +17,7 @@
 
 <script>
 import ChatItem from "./ChatItem.vue";
+
 export default {
   name: "ChatList",
   components: { ChatItem },
@@ -33,7 +34,7 @@ export default {
   methods: {
     selectChat(chat) {
       this.$emit("selectChat", chat);
-    }
+    },
   }
 };
 </script>
@@ -105,28 +106,5 @@ export default {
 .active-chats::-webkit-scrollbar-thumb {
   background: #008cdd;
   border-radius: 3px;
-}
-
-.status {
-  padding: 5px 12px;
-  border-radius: 15px;
-  font-size: 14px;
-  font-weight: bold;
-  color: white;
-  text-transform: uppercase;
-  text-align: center;
-  min-width: 80px;
-}
-
-.status.waiting {
-  background: linear-gradient(45deg, #ffcc00, #ff9900);
-}
-
-.status.idle {
-  background: linear-gradient(45deg, #ffcc00, #ffaa00);
-}
-
-.status.sleeping {
-  background: linear-gradient(45deg, #ff4b4b, #ff0000);
 }
 </style>

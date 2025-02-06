@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: 'CreditsBlock',
+  name: 'Credits',
 };
 </script>
 

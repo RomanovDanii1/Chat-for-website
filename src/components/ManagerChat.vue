@@ -57,8 +57,8 @@ export default {
 
     async function fetchHistory() {
       try {
-        const res = await fetch(`http://localhost:8000/history?chat_id=${props.chat.id}`);
-        const data = await res.json();
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/history?chat_id=${props.chat.id}`);
+        const data = await response.json();
         messages.value = data.map(msg => ({
           from: msg.sender,
           text: msg.text,
@@ -100,7 +100,7 @@ export default {
 
     async function sendManagerMessageAction(payload) {
       try {
-        await fetch("http://localhost:8000/manager/send", {
+        await fetch(`${import.meta.env.VITE_API_URL}/manager/send`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -117,7 +117,7 @@ export default {
 
     async function sendManagerMessage(text) {
       try {
-        await fetch("http://localhost:8000/manager/send", {
+        await fetch(`${import.meta.env.VITE_API_URL}/manager/send`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -191,7 +191,7 @@ export default {
       sendMessage,
       formatTimestamp,
       messagesContainer,
-      getMessageClass
+      getMessageClass,
     };
   }
 };

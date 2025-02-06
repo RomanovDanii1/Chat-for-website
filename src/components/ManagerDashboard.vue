@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import LanguageSelect from "./LanguageSelect.vue";
 import ChatList from "./ChatList.vue";
 import ManagerChat from "./ManagerChat.vue";
 
@@ -36,8 +35,9 @@ export default {
   methods: {
     async fetchChats() {
       try {
-        const res = await fetch("http://localhost:8000/manager/chats");
-        const data = await res.json();
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/manager/chats`);
+        const data = await response.json();
+
         this.chats = data.sort((a, b) => {
           const aTime =
             a.messages && a.messages.length
@@ -53,6 +53,7 @@ export default {
         console.error("Error fetching chats:", error);
       }
     },
+
     selectChat(chat) {
       this.selectedChat = chat;
     },
@@ -77,6 +78,7 @@ export default {
       };
     }
   },
+
   mounted() {
     this.timerCurrent = setInterval(() => {
       this.currentTime = new Date();
@@ -87,6 +89,7 @@ export default {
     }, 5000);
     this.connectManagerWS();
   },
+
   beforeUnmount() {
     clearInterval(this.timerCurrent);
     clearInterval(this.timerChats);

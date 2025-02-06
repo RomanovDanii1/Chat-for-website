@@ -25,13 +25,13 @@ export default {
   },
   computed: {
     lastMessage() {
-      if (!this.chat.messages || this.chat.messages.length === 0) {
+      if (!this.chat.messages || !this.chat.messages.length) {
         return {};
       }
 
       const userMessages = this.chat.messages.filter(msg => msg.sender === "user");
 
-      if (userMessages.length === 0) {
+      if (!userMessages.length) {
         return {};
       }
 
@@ -39,15 +39,18 @@ export default {
         return new Date(msg.timestamp) > new Date(latest.timestamp) ? msg : latest;
       });
     },
+
     lastMessageText() {
       const text = this.lastMessage.text || "";
       return text.length > 20 ? text.slice(0, 20) + "..." : text;
     },
+
     timeDiffSeconds() {
       if (!this.lastMessage.timestamp) return Infinity;
       const lastTime = new Date(this.lastMessage.timestamp);
       return (this.currentTime - lastTime) / 1000;
     },
+
     statusBackground() {
       const diff = this.timeDiffSeconds;
       if (diff < 60) {
@@ -60,6 +63,7 @@ export default {
         return "linear-gradient(45deg, #e74c3c, #c0392b)";
       }
     },
+
     statusLabel() {
       const diff = this.timeDiffSeconds;
       if (diff < 60) return "Active";

@@ -1,92 +1,90 @@
 <template>
-  <div>
-    <LanguageSelect />
-    <CreditsBlock />
+  <LanguageSelect />
+  <Credits />
 
-    <div id="chat-app">
-      <div id="chat-button-container">
-        <button
+  <div id="chat-app">
+    <div id="chat-button-container">
+      <button
           v-if="!chatButtonClicked"
           class="long-launch-button"
           id="long-launch-button"
           @click="toggleChat"
-        >
-          <img :src="chatIcon" alt="Chat" class="launch-icon" />
-          <span class="button-text">{{ $t('supportButtonText') }}</span>
-          <span class="chat-badge" v-if="unreadCount > 0" id="chat-badge-long">
+      >
+        <img :src="chatIcon" alt="Chat" class="launch-icon" />
+        <span class="button-text">{{ $t('supportButtonText') }}</span>
+        <span class="chat-badge" v-if="unreadCount > 0" id="chat-badge-long">
             {{ unreadCount }}
           </span>
-        </button>
+      </button>
 
-        <button
+      <button
           v-else
           class="launch-button"
           id="circle-launch-button"
           @click="toggleChat"
-        >
-          <img :src="chatIcon" alt="Chat" class="launch-icon" />
-          <span class="chat-badge" v-if="unreadCount > 0" id="chat-badge-circle">
+      >
+        <img :src="chatIcon" alt="Chat" class="launch-icon" />
+        <span class="chat-badge" v-if="unreadCount > 0" id="chat-badge-circle">
             {{ unreadCount }}
           </span>
-        </button>
-      </div>
+      </button>
+    </div>
 
-      <div
+    <div
         id="chat-container"
         v-show="chatVisible"
         :class="{ 'fade-in': chatVisible }"
-      >
+    >
 
-        <div class="chat-avatar-wrapper">
-          <img :src="avatarImage" alt="Avatar" />
-          <div class="chat-header-text">
-            <h4>Neuron</h4>
-            <h4>
-              {{ $t('alwaysHelper') }}
-              <span class="status-online">online</span>
-            </h4>
-          </div>
-          <button
+      <div class="chat-avatar-wrapper">
+        <img :src="avatarImage" alt="Avatar" />
+        <div class="chat-header-text">
+          <h4>Neuron</h4>
+          <h4>
+            {{ $t('alwaysHelper') }}
+            <span class="status-online">online</span>
+          </h4>
+        </div>
+        <button
             class="close-button"
             @click="toggleChat"
             :style="{ backgroundImage: 'url(' + closeIcon + ')' }"
-          ></button>
-        </div>
+        ></button>
+      </div>
 
-        <div id="messages" ref="messagesDiv">
-          <div
+      <div id="messages" ref="messagesDiv">
+        <div
             v-for="(msg, index) in messages"
             :key="index"
             :class="['message', msg.from]"
-          >
-            {{ msg.text }}
-          </div>
-
-          <div v-if="isBotTyping" class="message bot typing-indicator">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-          </div>
+        >
+          {{ msg.text }}
         </div>
 
-        <div class="message-input-wrapper">
-          <div class="inner-placeholder-container">
+        <div v-if="isBotTyping" class="message bot typing-indicator">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+      </div>
+
+      <div class="message-input-wrapper">
+        <div class="inner-placeholder-container">
             <textarea
-              class="custom-placeholder"
-              v-model="currentMessage"
-              :placeholder="$t('placeholderText')"
-              @input="handleInput"
-              @keydown.enter.prevent="sendMessage"
+                class="custom-placeholder"
+                v-model="currentMessage"
+                :placeholder="$t('placeholderText')"
+                @input="handleInput"
+                @keydown.enter.prevent="sendMessage"
             ></textarea>
 
-            <div
+          <div
               class="send-button"
               v-if="canSend"
               @click="sendMessage"
               style="cursor: pointer;"
-            >
-              <img :src="sendIcon" alt="Send" class="send-icon" />
-            </div>
+          >
+            <img :src="sendIcon" alt="Send" class="send-icon" />
           </div>
         </div>
       </div>
@@ -96,13 +94,13 @@
 
 <script>
 import LanguageSelect from "./LanguageSelect.vue";
-import CreditsBlock from "./CreditsBlock.vue";
+import Credits from "./CreditsView.vue";
 
 export default {
   name: "Chat",
   components: {
     LanguageSelect,
-    CreditsBlock
+    Credits
   },
   data() {
     return {
@@ -142,7 +140,6 @@ export default {
         localStorage.setItem("chatUnreadCount", "0");
       }
     },
-
     connectWebSocket() {
       let chatId = localStorage.getItem("chatId");
       if (!chatId) {
@@ -246,9 +243,11 @@ export default {
 
     async loadChatHistory() {
       if (!this.chatId) return;
+
       try {
-        const res = await fetch(`http://localhost:8000/history?chat_id=${this.chatId}`);
-        const data = await res.json();
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/history?chat_id=${this.chatId}`);
+        const data = await response.json();
+
         if (Array.isArray(data) && data.length > 0) {
           this.messages = data.map(msg => ({
             text: msg.text,
@@ -341,7 +340,6 @@ export default {
     }
 }
 
-
 .launch-button {
     position: fixed;
     z-index: 1000;
@@ -381,8 +379,7 @@ export default {
     line-height: 16px;
     text-align: center;
     padding: 0 4px;
-  }
-
+}
 
 #chat-container {
     position: fixed;
@@ -426,8 +423,9 @@ export default {
     background: transparent;
     color: #1C1B1F;
     margin-left: 110px;
-    height: 13.65px;
-    width: 14.15px;
+    height: 13px;
+    width: 14px;
+    cursor: pointer;
 }
 
 #messages {
@@ -467,15 +465,6 @@ export default {
 
 #messages::-webkit-scrollbar-thumb:hover {
     background: #555555; 
-}
-
-
-
-.message-input {
-    box-sizing: border-box;
-    width: calc(100% - 20px);
-    padding: 10px;
-    border: none;
 }
 
 .send-button {
@@ -529,7 +518,7 @@ button.chat-send-button {
     font-weight: 500;
     font-size: 14px;
     line-height: 20px;
-    background: linear-gradient(45deg, #d49402, #8f6003);
+    background: linear-gradient(45deg, #0b5fc1, #377cf5);
     color: white;
 }
 
@@ -539,7 +528,7 @@ button.chat-send-button {
     font-size: 17px;
     text-align: center;
     line-height: 25px;
-    background: linear-gradient(45deg, #d49402, #8f6003);
+    background: linear-gradient(45deg, #0b5fc1, #377cf5);
     color: white;
 }
 
@@ -548,11 +537,8 @@ button.chat-send-button {
     display: flex;
     align-items: center;
     background-image: linear-gradient(45deg, #fefefe, #ffffff);
-    border-top-left-radius: 40px;
-    border-top-right-radius: 40px;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
     border-bottom: 1px solid #1F1F2926;
+    border-radius: 40px 40px 0 0;
     padding: 10px;
 }
 
